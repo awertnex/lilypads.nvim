@@ -5,13 +5,24 @@
 
 #if defined(LLP_LUA)
 
-#   define LLP_CMT "-- "
 #   define LLP_DIR_DST "lilypads/lua/colors/"
+#   define LLP_EXT ".lua"
+#   define LLP_VIM_CMD_OPEN "vim.cmd \""
+#   define LLP_VIM_CMD_CLOSE "\""
+#   define LLP_CMT "--"
+#   define LLP_CMT_TAB1 "  "
+#   define LLP_CMT_TAB2 "      "
+#   define LLP_CODE_SETUP ""
 
 #elif defined(LLP_VIM)
 
-#   define LLP_CMT "\" "
 #   define LLP_DIR_DST "lilypads/vim/colors/"
+#   define LLP_EXT ".vim"
+#   define LLP_VIM_CMD_OPEN ""
+#   define LLP_VIM_CMD_CLOSE ""
+#   define LLP_CMT "\""
+#   define LLP_CMT_TAB1 "   "
+#   define LLP_CMT_TAB2 "       "
 
 #endif /* LLP_SYNTAX */
 
@@ -19,7 +30,23 @@
 
 /* ---- section: definitions ------------------------------------------------ */
 
-#define STRING_MAX 2048
+#define NAME_MAX 256
+
+#ifdef STRING_MAX
+#   undef STRING_MAX
+#   define STRING_MAX 2048
+#else
+#   define STRING_MAX 2048
+#endif /* STRING_MAX */
+
+#define TEXT_WIDTH 80
+
+#define LLP_PROJECT_REPOSITORY "https://github.com/awertnex/lilypads.git"
+#define LLP_LICENSE_OWNER "Lily Awertnex"
+#define LLP_LICENSE_YEAR "2026"
+#define LLP_NOTES \
+    LLP_CMT_TAB1"NOTES:\n" \
+    LLP_CMT_TAB2"hitest command: `source $VIMRUNTIME/syntax/hitest.vim`"
 
 struct col
 {
@@ -92,16 +119,48 @@ enum llp_color
     LLP_COLOR_OCEANS_LIGHT,
     LLP_COLOR_OCEANS_LIGHT_DEAD,
     LLP_COLOR_COUNT,
-} /* llp_color */;
+}; /* llp_color */
 
 /* ---- section: declarations ----------------------------------------------- */
 
+/*! declared in `main.c`.
+ */
 extern FILE *_file_out;
-extern llp_theme_colors colors[LLP_COLOR_COUNT];
+
+/*! declared and initialized in `main.c`.
+ */
+extern str lilypads_theme_name[LLP_COLOR_COUNT][NAME_MAX];
+
+/*! declared and initialized in `main.c`.
+ */
+extern llp_theme_colors lilypads_theme_colors[LLP_COLOR_COUNT];
+
+extern llp_theme_colors theme_colors_nature_dark;
+extern llp_theme_colors theme_colors_nature_dark_dead;
+extern llp_theme_colors theme_colors_nature_light;
+extern llp_theme_colors theme_colors_nature_light_dead;
+extern llp_theme_colors theme_colors_cherry_dark;
+extern llp_theme_colors theme_colors_cherry_dark_dead;
+extern llp_theme_colors theme_colors_cherry_light;
+extern llp_theme_colors theme_colors_cherry_light_dead;
+extern llp_theme_colors theme_colors_oceans_dark;
+extern llp_theme_colors theme_colors_oceans_dark_dead;
+extern llp_theme_colors theme_colors_oceans_light;
+extern llp_theme_colors theme_colors_oceans_light_dead;
 
 /* ---- section: signatures ------------------------------------------------- */
 
 void vim_cmd(const str *cmd);
+void code(u8 level, const str *text);
 void comment(const str *text);
+void comment_block(const str *text);
+void license(void);
+void title(const str *text);
+
+void header_setup(const str *name);
+void footer_setup(void);
+void write_colors(llp_theme_colors colors);
+
+u32 write_file(const str *name, llp_theme_colors colors);
 
 #endif /* LILYPADS_COMMON_H */

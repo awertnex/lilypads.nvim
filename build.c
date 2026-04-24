@@ -5,19 +5,27 @@
 
 _buf cmd = {0};
 
+str *cflags[] =
+{
+    "-Wall",
+    "-Wextra",
+    "-std=c89",
+    "-Wpedantic",
+};
+
 str *files_lua[] =
 {
     DIR_SRC"main.c",
-    DIR_SRC"common_lua.c",
     DIR_SRC"logger.c",
+    DIR_SRC"util.c",
     DIR_SRC"write_files_lua.c",
 };
 
 str *files_vim[] =
 {
     DIR_SRC"main.c",
-    DIR_SRC"common_vim.c",
     DIR_SRC"logger.c",
+    DIR_SRC"util.c",
     DIR_SRC"write_files_vim.c",
 };
 
