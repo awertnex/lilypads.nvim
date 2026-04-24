@@ -17,8 +17,13 @@ void code(u8 level, const str *text)
     fprintf(_file_out, "%s\n", text);
 }
 
-void comment(const str *text)
+void comment(u8 level, const str *text)
 {
+    while (level)
+    {
+        fprintf(_file_out, "%s", "    ");
+        --level;
+    }
     fprintf(_file_out, LLP_CMT" %s\n", text);
 }
 
@@ -44,7 +49,7 @@ void license(void)
     snprintf(temp, STRING_MAX * 4,
             LLP_CMT_TAB1"MIT License\n"
             "\n"
-            LLP_CMT_TAB1"Copyright (c) %s %s\n"
+            LLP_CMT_TAB1"Copyright (c) %u %s\n"
             "\n"
             LLP_CMT_TAB1"Permission is hereby granted, free of charge, to any person obtaining a copy\n"
             LLP_CMT_TAB1"of this software and associated documentation files (the \"Software\"), to deal\n"
@@ -68,15 +73,21 @@ void license(void)
     comment_block(temp);
 }
 
-void title(const str *text)
+void title(u8 level, const str *text)
 {
     str temp[STRING_MAX] = {0};
     i32 cursor = 0;
     i32 strlen_cmt = strlen(LLP_CMT);
 
+    while (level)
+    {
+        cursor += snprintf(temp + cursor, STRING_MAX - cursor, "%s", "    ");
+        --level;
+    }
+
     if (!text[0])
     {
-        cursor += snprintf(temp, STRING_MAX, "%s ", LLP_CMT);
+        cursor += snprintf(temp + cursor, STRING_MAX - cursor, "%s ", LLP_CMT);
         for (; cursor < TEXT_WIDTH - strlen_cmt - 1; ++cursor)
             temp[cursor] = '-';
         cursor += snprintf(temp + cursor, STRING_MAX - cursor, " %s", LLP_CMT);
@@ -84,7 +95,7 @@ void title(const str *text)
         return;
     }
 
-    cursor += snprintf(temp, STRING_MAX, "%s ---- ", LLP_CMT);
+    cursor += snprintf(temp + cursor, STRING_MAX - cursor, "%s ---- ", LLP_CMT);
     cursor += snprintf(temp + cursor, STRING_MAX - cursor, "%s", text);
 
     if (cursor < TEXT_WIDTH - strlen_cmt - 1)

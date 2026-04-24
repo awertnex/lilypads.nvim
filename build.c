@@ -16,6 +16,7 @@ str *cflags[] =
 str *files_lua[] =
 {
     DIR_SRC"main.c",
+    DIR_SRC"common.c",
     DIR_SRC"logger.c",
     DIR_SRC"util.c",
     DIR_SRC"write_files_lua.c",
@@ -24,6 +25,7 @@ str *files_lua[] =
 str *files_vim[] =
 {
     DIR_SRC"main.c",
+    DIR_SRC"common.c",
     DIR_SRC"logger.c",
     DIR_SRC"util.c",
     DIR_SRC"write_files_vim.c",

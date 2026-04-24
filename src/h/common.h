@@ -43,19 +43,25 @@
 
 #define LLP_PROJECT_REPOSITORY "https://github.com/awertnex/lilypads.git"
 #define LLP_LICENSE_OWNER "Lily Awertnex"
-#define LLP_LICENSE_YEAR "2026"
+#define LLP_LICENSE_YEAR 2026
 #define LLP_NOTES \
     LLP_CMT_TAB1"NOTES:\n" \
     LLP_CMT_TAB2"hitest command: `source $VIMRUNTIME/syntax/hitest.vim`"
 
+#define FUNC_PAINT "llp_paint"
+#define FUNC_CLEAR "llp_clear"
+
 struct col
 {
-    u8 r, g, b, a;
+    u8 r, g, b;
 };
 typedef struct col llp_col;
 
 struct theme_colors
 {
+    str name[NAME_MAX];
+    void (*setup_func)(void);
+
     struct
     {
         llp_col base;
@@ -129,38 +135,34 @@ extern FILE *_file_out;
 
 /*! declared and initialized in `main.c`.
  */
-extern str lilypads_theme_name[LLP_COLOR_COUNT][NAME_MAX];
-
-/*! declared and initialized in `main.c`.
- */
 extern llp_theme_colors lilypads_theme_colors[LLP_COLOR_COUNT];
-
-extern llp_theme_colors theme_colors_nature_dark;
-extern llp_theme_colors theme_colors_nature_dark_dead;
-extern llp_theme_colors theme_colors_nature_light;
-extern llp_theme_colors theme_colors_nature_light_dead;
-extern llp_theme_colors theme_colors_cherry_dark;
-extern llp_theme_colors theme_colors_cherry_dark_dead;
-extern llp_theme_colors theme_colors_cherry_light;
-extern llp_theme_colors theme_colors_cherry_light_dead;
-extern llp_theme_colors theme_colors_oceans_dark;
-extern llp_theme_colors theme_colors_oceans_dark_dead;
-extern llp_theme_colors theme_colors_oceans_light;
-extern llp_theme_colors theme_colors_oceans_light_dead;
 
 /* ---- section: signatures ------------------------------------------------- */
 
 void vim_cmd(const str *cmd);
 void code(u8 level, const str *text);
-void comment(const str *text);
+void comment(u8 level, const str *text);
 void comment_block(const str *text);
 void license(void);
-void title(const str *text);
+void title(u8 level, const str *text);
 
 void header_setup(const str *name);
 void footer_setup(void);
-void write_colors(llp_theme_colors colors);
+void write_colors(const llp_theme_colors c);
 
-u32 write_file(const str *name, llp_theme_colors colors);
+void setup_colors_nature_dark(void);
+void setup_colors_nature_dark_dead(void);
+void setup_colors_nature_light(void);
+void setup_colors_nature_light_dead(void);
+void setup_colors_cherry_dark(void);
+void setup_colors_cherry_dark_dead(void);
+void setup_colors_cherry_light(void);
+void setup_colors_cherry_light_dead(void);
+void setup_colors_oceans_dark(void);
+void setup_colors_oceans_dark_dead(void);
+void setup_colors_oceans_light(void);
+void setup_colors_oceans_light_dead(void);
+
+u32 write_file(llp_theme_colors colors);
 
 #endif /* LILYPADS_COMMON_H */
