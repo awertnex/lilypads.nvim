@@ -109,3 +109,23 @@ void title(u8 level, const str *text)
 
     fprintf(_file_out, "%s\n", temp);
 }
+
+void pretty_print_hex_to_rgb(const str *name, u32 hex)
+{
+    printf("%x, {%3d, %3d, %3d}, %s\n", hex,
+            (hex >> 0x10) & 0xff,
+            (hex >> 0x08) & 0xff,
+            (hex >> 0x00) & 0xff, name);
+}
+
+u32 rgb_to_hex(llp_col col)
+{
+    return (u32)(0 |
+            (col.r << 0x10) |
+            (col.g << 0x08) |
+            (col.b << 0x00));
+}
+
+u32 gui_to_cterm(u32 hex)
+{
+}

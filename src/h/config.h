@@ -1,0 +1,6 @@
+#ifndef LILYPADS_CONFIG_H
+#define LILYPADS_CONFIG_H
+
+#define INACTIVE_COEF 0.8
+
+#endif /* LILYPADS_CONFIG_H */

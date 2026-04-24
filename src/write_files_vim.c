@@ -1,4 +1,5 @@
 #include "h/common.h"
+#include "h/hl_group.h"
 #include "h/logger.h"
 
 #include "stdio.h"
@@ -32,16 +33,80 @@ void header_setup(const str *name)
 
 void footer_setup(void) {} /* no code is required on the vim side */
 
-void write_colors(const llp_theme_colors c)
+void highlight_group(u8 level, const llp_hl_group group)
+{
+    str temp[STRING_MAX] = {0};
+    str str_separator[3] = {0};
+    u32 cursor = 0;
+    const u32 I_CTERM = 0;
+    const u32 I_GUI = 1;
+    const u32 I_TERM = 2;
+
+    /* 0: cterm, 1: gui, 2: term */
+    str str_fg[STRING_MAX] = {0};
+    str str_bg[STRING_MAX] = {0};
+    str str_sp[STRING_MAX] = {0};
+    str str_sp_col[STRING_MAX] = {0};
+
+    if (!group.name[0])
+    {
+        _log_error("Failed to Write Highlight Group, Name NULL");
+        return;
+    }
+
+    while (level)
+    {
+        fprintf(_file_out, "%s", "    ");
+        --level;
+    }
+
+    if (!group.flags & FLAG_VIM)
+    {
+        snprintf(temp, STRING_MAX, "call " FUNC_PAINT "('%s', {})", group.name);
+        comment(0, temp);
+        return;
+    }
+
+    if (group.flags & FLAG_FG)
+    {
+        snprintf(str_fg, STRING_MAX, "'ctermfg': '#%06x', 'guifg': '#%06x'",
+                group.fg, gui_to_cterm(group.fg));
+        snprintf(str_separator, 4, "%s", ", ");
+    }
+
+    if (group.flags & FLAG_BG)
+    {
+        snprintf(str_bg, STRING_MAX, "%s'ctermbg': '#%06x', 'guibg': '#%06x'",
+                str_separator, group.bg, gui_to_cterm(group.bg));
+        snprintf(str_separator, 4, "%s", ", ");
+    }
+
+    if (group.flags & FLAG_SP)
+    {
+        snprintf(str_sp, STRING_MAX, "%s'term': '%s', 'cterm': '%s', 'gui': '%s', 'guisp': '#%06x'",
+                str_separator,
+                hl_group_sp_text[group.sp], hl_group_sp_text[group.sp],
+                hl_group_sp_text[group.sp], group.sp_col);
+    }
+
+    fprintf(_file_out, "call " FUNC_PAINT "('%s', {%s%s%s})\n",
+            group.name, str_fg, str_bg, str_sp);
+}
+
+void write_colors(const llp_hl_groups groups)
 {
     fputc('\n', _file_out);
 
     title(0, "general highlight groups");
     fputc('\n', _file_out);
 
+    fputc('\n', _file_out);
     title(0, "syntax highlight groups");
     fputc('\n', _file_out);
 
+    highlight_group(0, groups.visual);
+
+    fputc('\n', _file_out);
     title(0, "my favorite section");
     fputc('\n', _file_out);
 }
