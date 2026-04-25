@@ -50,7 +50,7 @@ void highlight_group(u8 level, const llp_hl_group group)
         --level;
     }
 
-    if (!(group.flags & FLAG_LUA))
+    if (!(group.flags & FLAG_ON))
     {
         snprintf(temp, STRING_MAX, "%s {};", group.name);
         comment(0, temp);
