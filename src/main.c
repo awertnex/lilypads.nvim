@@ -1,6 +1,8 @@
 #include "h/common.h"
 #include "h/logger.h"
 
+#include <stdio.h>
+
 FILE *_file_out = NULL;
 llp_colorscheme lilypads_colorscheme[LLP_COLOR_COUNT] = {0};
 str hl_group_sp_text[HL_GROUP_SP_COUNT][HL_GROUP_PARAM_MAX] = {0};

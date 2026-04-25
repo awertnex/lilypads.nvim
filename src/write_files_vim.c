@@ -2,7 +2,8 @@
 #include "h/hl_group.h"
 #include "h/logger.h"
 
-#include "stdio.h"
+#include <stdio.h>
+#include <inttypes.h>
 
 void header_setup(const str *name)
 {
@@ -36,17 +37,12 @@ void footer_setup(void) {} /* no code is required on the vim side */
 void highlight_group(u8 level, const llp_hl_group group)
 {
     str temp[STRING_MAX] = {0};
-    str str_separator[3] = {0};
-    u32 cursor = 0;
-    const u32 I_CTERM = 0;
-    const u32 I_GUI = 1;
-    const u32 I_TERM = 2;
+    str str_separator[4] = {0};
 
     /* 0: cterm, 1: gui, 2: term */
     str str_fg[STRING_MAX] = {0};
     str str_bg[STRING_MAX] = {0};
     str str_sp[STRING_MAX] = {0};
-    str str_sp_col[STRING_MAX] = {0};
 
     if (!group.name[0])
     {
@@ -60,7 +56,7 @@ void highlight_group(u8 level, const llp_hl_group group)
         --level;
     }
 
-    if (!group.flags & FLAG_VIM)
+    if (!(group.flags & FLAG_VIM))
     {
         snprintf(temp, STRING_MAX, "call " FUNC_PAINT "('%s', {})", group.name);
         comment(0, temp);
@@ -69,24 +65,24 @@ void highlight_group(u8 level, const llp_hl_group group)
 
     if (group.flags & FLAG_FG)
     {
-        snprintf(str_fg, STRING_MAX, "'ctermfg': '#%06x', 'guifg': '#%06x'",
-                group.fg, gui_to_cterm(group.fg));
+        snprintf(str_fg, STRING_MAX, "'ctermfg': '%"PRIu32"', 'guifg': '#%06"PRIx32"'",
+                gui_to_cterm(group.fg), group.fg);
         snprintf(str_separator, 4, "%s", ", ");
     }
 
     if (group.flags & FLAG_BG)
     {
-        snprintf(str_bg, STRING_MAX, "%s'ctermbg': '#%06x', 'guibg': '#%06x'",
-                str_separator, group.bg, gui_to_cterm(group.bg));
+        snprintf(str_bg, STRING_MAX, "%s'ctermbg': '%"PRIu32"', 'guibg': '#%06"PRIx32"'",
+                str_separator, gui_to_cterm(group.bg), group.bg);
         snprintf(str_separator, 4, "%s", ", ");
     }
 
     if (group.flags & FLAG_SP)
     {
-        snprintf(str_sp, STRING_MAX, "%s'term': '%s', 'cterm': '%s', 'gui': '%s', 'guisp': '#%06x'",
+        snprintf(str_sp, STRING_MAX, "%s'term': '%s', 'cterm': '%s', 'gui': '%s', 'guisp': '#%06"PRIx32"'",
                 str_separator,
                 hl_group_sp_text[group.sp], hl_group_sp_text[group.sp],
-                hl_group_sp_text[group.sp], group.sp_col);
+                hl_group_sp_text[group.sp], group.fg);
     }
 
     fprintf(_file_out, "call " FUNC_PAINT "('%s', {%s%s%s})\n",

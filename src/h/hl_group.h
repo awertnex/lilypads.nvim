@@ -13,7 +13,6 @@ struct hl_group
     u32 fg;     /* hex: foreground color */
     u32 bg;     /* hex: background color */
     u32 sp;     /* sp: special elements (e.g. underline) */
-    u32 sp_col; /* hex: color of `sp` */
 };
 typedef struct hl_group llp_hl_group;
 
@@ -35,6 +34,7 @@ struct hl_groups
     llp_hl_group question;
     llp_hl_group status_line;
     llp_hl_group status_line_nc;
+
     llp_hl_group win_separator;
     llp_hl_group vert_split;
     llp_hl_group title;
@@ -73,6 +73,7 @@ struct hl_groups
     llp_hl_group redraw_debug_normal;
     llp_hl_group underlined;
     llp_hl_group l_cursor;
+
     llp_hl_group normal;
     llp_hl_group character;
     llp_hl_group constant;

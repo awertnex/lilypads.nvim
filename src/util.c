@@ -1,6 +1,8 @@
 #include "h/common.h"
+#include "h/config.h"
 
-#include "string.h"
+#include <stdio.h>
+#include <string.h>
 
 void vim_cmd(const str *cmd)
 {
@@ -24,7 +26,7 @@ void comment(u8 level, const str *text)
         fprintf(_file_out, "%s", "    ");
         --level;
     }
-    fprintf(_file_out, LLP_CMT" %s\n", text);
+    fprintf(_file_out, LLP_CMT " %s\n", text);
 }
 
 void comment_block(const str *text)
@@ -46,28 +48,29 @@ void comment_block(const str *text)
 void license(void)
 {
     str temp[STRING_MAX * 4] = {0};
+
     snprintf(temp, STRING_MAX * 4,
-            LLP_CMT_TAB1"MIT License\n"
+            LLP_CMT_TAB1 "MIT License\n"
             "\n"
-            LLP_CMT_TAB1"Copyright (c) %u %s\n"
+            LLP_CMT_TAB1 "Copyright (c) %u %s\n"
             "\n"
-            LLP_CMT_TAB1"Permission is hereby granted, free of charge, to any person obtaining a copy\n"
-            LLP_CMT_TAB1"of this software and associated documentation files (the \"Software\"), to deal\n"
-            LLP_CMT_TAB1"in the Software without restriction, including without limitation the rights\n"
-            LLP_CMT_TAB1"to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n"
-            LLP_CMT_TAB1"copies of the Software, and to permit persons to whom the Software is\n"
-            LLP_CMT_TAB1"furnished to do so, subject to the following conditions:\n"
+            LLP_CMT_TAB1 "Permission is hereby granted, free of charge, to any person obtaining a copy\n"
+            LLP_CMT_TAB1 "of this software and associated documentation files (the \"Software\"), to deal\n"
+            LLP_CMT_TAB1 "in the Software without restriction, including without limitation the rights\n"
+            LLP_CMT_TAB1 "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n"
+            LLP_CMT_TAB1 "copies of the Software, and to permit persons to whom the Software is\n"
+            LLP_CMT_TAB1 "furnished to do so, subject to the following conditions:\n"
             "\n"
-            LLP_CMT_TAB1"The above copyright notice and this permission notice shall be included in all\n"
-            LLP_CMT_TAB1"copies or substantial portions of the Software.\n"
+            LLP_CMT_TAB1 "The above copyright notice and this permission notice shall be included in all\n"
+            LLP_CMT_TAB1 "copies or substantial portions of the Software.\n"
             "\n"
-            LLP_CMT_TAB1"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n"
-            LLP_CMT_TAB1"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n"
-            LLP_CMT_TAB1"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n"
-            LLP_CMT_TAB1"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n"
-            LLP_CMT_TAB1"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
-            LLP_CMT_TAB1"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"
-            LLP_CMT_TAB1"SOFTWARE.\n",
+            LLP_CMT_TAB1 "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n"
+            LLP_CMT_TAB1 "IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n"
+            LLP_CMT_TAB1 "FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n"
+            LLP_CMT_TAB1 "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n"
+            LLP_CMT_TAB1 "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
+            LLP_CMT_TAB1 "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"
+            LLP_CMT_TAB1 "SOFTWARE.\n",
         LLP_LICENSE_YEAR, LLP_LICENSE_OWNER);
 
     comment_block(temp);
@@ -128,4 +131,14 @@ u32 rgb_to_hex(llp_col col)
 
 u32 gui_to_cterm(u32 hex)
 {
+    (void)hex;
+    return 0;
+}
+
+llp_col col_nc(llp_col col)
+{
+    col.r *= INACTIVE_COEF;
+    col.g *= INACTIVE_COEF;
+    col.b *= INACTIVE_COEF;
+    return col;
 }

@@ -1,5 +1,4 @@
 #include "deps/buildtool/buildtool.h"
-#include "src/h/common.h"
 
 #define DIR_SRC "src/"
 
@@ -58,6 +57,9 @@ void build_lua(int argc, char **argv)
     cmd_push(&cmd, COMPILER);
     cmd_push(&cmd, "-DLLP_LUA");
 
+    for (i = 0; i < arr_len(cflags); ++i)
+        cmd_push(&cmd, cflags[i]);
+
     for (i = 0; i < arr_len(files_lua); ++i)
         cmd_push(&cmd, files_lua[i]);
 
@@ -78,6 +80,9 @@ void build_vim(int argc, char **argv)
 
     cmd_push(&cmd, COMPILER);
     cmd_push(&cmd, "-DLLP_VIM");
+
+    for (i = 0; i < arr_len(cflags); ++i)
+        cmd_push(&cmd, cflags[i]);
 
     for (i = 0; i < arr_len(files_vim); ++i)
         cmd_push(&cmd, files_vim[i]);

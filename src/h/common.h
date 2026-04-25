@@ -1,6 +1,8 @@
 #ifndef LILYPADS_COMMON_H
 #define LILYPADS_COMMON_H
 
+#define _GNU_SOURCE
+
 #if defined(LLP_LUA)
 
 #   define LLP_DIR_DST "lilypads/lua/colors/"
@@ -27,7 +29,7 @@
 #include "types.h"
 #include "hl_group.h"
 
-#include "stdio.h"
+#include <stdio.h>
 
 /* ---- section: definitions ------------------------------------------------ */
 
@@ -86,37 +88,33 @@ typedef struct col_base llp_col_base;
 
 struct col_ui
 {
-    llp_col bg_base;
-    llp_col bg_base_na; /* TODO: deprecate, use `theme_colors.na_coef` */
-    llp_col bg_base_na_light; /* TODO: deprecate, use `theme_colors.na_coef` */
-    llp_col bg_linenu;
-    llp_col bg_statusline;
-    llp_col bg_statusline_na; /* TODO: deprecate, use `theme_colors.na_coef` */
-    u8 na_coef;
+    llp_col base;
+    llp_col base_nc; /* TODO: deprecate, use `theme_colors.na_coef` */
+    llp_col base_nc_light; /* TODO: deprecate, use `theme_colors.na_coef` */
+    llp_col line_nu;
+    llp_col status_line;
+    llp_col status_line_nc; /* TODO: deprecate, use `theme_colors.na_coef` */
 };
 typedef struct col_ui llp_col_ui;
 
-struct col_syntax
+struct col_text
 {
-    llp_col base_white;
-    llp_col base_white_na; /* TODO: deprecate, use `theme_colors.na_coef` */
-    llp_col bright_white;
-    llp_col linenu;
+    /* base syntax colors */
+    llp_col text;
+    llp_col text_alt;
+    llp_col line_nu;
     llp_col comment;
-    llp_col cmp;
-    llp_col bg_debugerror;
-};
-typedef struct col_syntax llp_col_syntax;
+    llp_col link;
 
-struct col_diag
-{
+    /* diagnostic colors */
     llp_col error;
+    llp_col error_alt;
     llp_col warn;
     llp_col info;
     llp_col hint;
     llp_col ok;
 };
-typedef struct col_diag llp_col_diag;
+typedef struct col_text llp_col_text;
 
 struct colorscheme
 {
@@ -128,14 +126,9 @@ struct colorscheme
      */
     void (*setup_func)(void);
 
-    /*! @brief inactive elements darkness coefficient.
-     */
-    u8 na_coef;
-
     llp_col_base c_base;
     llp_col_ui c_ui;
-    llp_col_syntax c_syntax;
-    llp_col_diag c_diag;
+    llp_col_text c_text;
     llp_hl_groups groups;
 };
 typedef struct colorscheme llp_colorscheme;
@@ -182,6 +175,10 @@ void pretty_print_hex_to_rgb(const str *name, u32 hex);
 u32 rgb_to_hex(llp_col col);
 u32 gui_to_cterm(u32 hex);
 
+/*! @brief multiply color with @ref INACTIVE_COEF.
+ */
+llp_col col_nc(llp_col col);
+
 /*! @brief write the header components of the colorscheme file.
  *
  *  @remark called automatically inside @ref write_file().
@@ -201,7 +198,7 @@ void footer_setup(void);
 void write_colors(const llp_hl_groups groups);
 
 void setup_hl_group(llp_hl_group *g, const str *name, u32 flags,
-        llp_col fg, llp_col bg, enum hl_group_sp_index sp, llp_col sp_col);
+        llp_col fg, llp_col bg, enum hl_group_sp_index sp);
 
 void setup_hl_groups(llp_colorscheme *col);
 void setup_colors_nature_dark(void);
