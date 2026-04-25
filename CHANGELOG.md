@@ -1,9 +1,22 @@
 # changelog
 
 - - -
-## v0.1-dev (current)
+## v1.0 (2026 04 25)
 
 #### changes
+- (2026 04 25): make all 12 themes:
+                - lilypads_nature_dark
+                - lilypads_nature_dark_dead
+                - lilypads_nature_light
+                - lilypads_nature_light_dead
+                - lilypads_cherry_dark
+                - lilypads_cherry_dark_dead
+                - lilypads_cherry_light
+                - lilypads_cherry_light_dead
+                - lilypads_oceans_dark
+                - lilypads_oceans_dark_dead
+                - lilypads_oceans_light
+                - lilypads_oceans_light_dead
 - (2026 04 25): make vim and lua themes match almost 1:1
 
 - - -

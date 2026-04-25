@@ -37,13 +37,13 @@ static llp_col_base col_base_nature_dark_dead =
     { 74,  77,  77},    /* dead */
     {178, 181, 180},    /* radioactive */
     {207, 237, 187},    /* highly_radioactive */
-    {124, 131, 127},    /* blooming_radioactive */
+    {124, 131, 127}     /* blooming_radioactive */
 };
 
 static llp_col_base col_base_nature_light =
 {
     { 49, 122,  47},    /* base */
-    { 56, 136,  34},    /* loud */
+    { 58, 136,  34},    /* loud */
     { 44,  82,  28},    /* bright */
     {192, 215, 190},    /* visual */
     {111, 146,  99},    /* habitable */
@@ -54,7 +54,7 @@ static llp_col_base col_base_nature_light =
     {151, 157, 157},    /* dead */
     {139, 182, 121},    /* radioactive */
     { 41, 104,   0},    /* highly_radioactive */
-    { 32,  82,   0}     /* blooming_radioactive */
+    { 11,  29,   0}     /* blooming_radioactive */
 };
 
 static llp_col_base col_base_nature_light_dead =
@@ -70,54 +70,158 @@ static llp_col_base col_base_nature_light_dead =
     { 86,  87,  85},    /* mossy */
     {151, 157, 157},    /* dead */
     {178, 181, 180},    /* radioactive */
-    { 11,  29,   0},    /* highly_radioactive */
+    { 58, 113,   0},    /* highly_radioactive */
     { 15,  16,  16}     /* blooming_radioactive */
 };
 
 static llp_col_base col_base_cherry_dark =
-{0
+{
+    {179,  83,  60},    /* base */
+    {209,  83,  68},    /* loud */
+    {250, 120, 100},    /* bright */
+    {118,  52,  44},    /* visual */
+    {213, 165, 149},    /* habitable */
+    {118, 114, 178},    /* dry0 */
+    {159, 140, 183},    /* dry1 */
+    {209, 192, 203},    /* thirsty */
+    {186,  84,  86},    /* mossy */
+    { 77,  76,  74},    /* dead */
+    {255, 177, 158},    /* radioactive */
+    {255, 162, 149},    /* highly_radioactive */
+    {255,  73,  96}     /* blooming_radioactive */
 };
 
 static llp_col_base col_base_cherry_dark_dead =
-{0
+{
+    { 91,  89,  87},    /* base */
+    { 92,  90,  88},    /* loud */
+    {128, 126, 124},    /* bright */
+    { 57,  55,  54},    /* visual */
+    {167, 167, 166},    /* habitable */
+    { 86,  83,  82},    /* dry0 */
+    {124, 122, 122},    /* dry1 */
+    {190, 190, 189},    /* thirsty */
+    { 88,  86,  85},    /* mossy */
+    { 77,  76,  74},    /* dead */
+    {182, 180, 178},    /* radioactive */
+    {255, 212, 202},    /* highly_radioactive */
+    {134, 128, 124}     /* blooming_radioactive */
 };
 
 static llp_col_base col_base_cherry_light =
-{0
+{
+    {170,  79,  56},    /* base */
+    {199,  79,  65},    /* loud */
+    {118,  52,  44},    /* bright */
+    {235, 201, 190},    /* visual */
+    {181, 121, 108},    /* habitable */
+    {148,  67,  95},    /* dry0 */
+    {169, 104, 112},    /* dry1 */
+    {129, 108,  99},    /* thirsty */
+    {186,  84,  86},    /* mossy */
+    {156, 156, 152},    /* dead */
+    {227, 150, 135},    /* radioactive */
+    {161,  50,  47},    /* highly_radioactive */
+    { 44,  16,   6}     /* blooming_radioactive */
 };
 
 static llp_col_base col_base_cherry_light_dead =
-{0
+{
+    { 88,  84,  83},    /* base */
+    { 90,  85,  84},    /* loud */
+    { 58,  55,  55},    /* bright */
+    {204, 202, 202},    /* visual */
+    {124, 122, 122},    /* habitable */
+    { 68,  65,  66},    /* dry0 */
+    {103, 102, 102},    /* dry1 */
+    {110, 108, 108},    /* thirsty */
+    { 89,  86,  86},    /* mossy */
+    {156, 156, 152},    /* dead */
+    {182, 180, 178},    /* radioactive */
+    {180,  71,  68},    /* highly_radioactive */
+    { 16,  16,  15}     /* blooming_radioactive */
 };
 
 static llp_col_base col_base_oceans_dark =
-{0
+{
+    {  0, 133, 148},    /* base */
+    {  0, 150, 161},    /* loud */
+    {  0, 187, 198},    /* bright */
+    {  0,  86,  90},    /* visual */
+    {122, 187, 195},    /* habitable */
+    {  0, 139,  99},    /* dry0 */
+    { 68, 164, 146},    /* dry1 */
+    {158, 205, 213},    /* thirsty */
+    {  0, 137, 130},    /* mossy */
+    { 76,  76,  78},    /* dead */
+    { 32, 230, 236},    /* radioactive */
+    {  0, 249, 250},    /* highly_radioactive */
+    {  0, 255, 255}     /* blooming_radioactive */
 };
 
 static llp_col_base col_base_oceans_dark_dead =
-{0
+{
+    { 87,  90,  91},    /* base */
+    { 88,  91,  92},    /* loud */
+    {124, 127, 128},    /* bright */
+    { 54,  56,  57},    /* visual */
+    {167, 167, 167},    /* habitable */
+    { 81,  84,  85},    /* dry0 */
+    {121, 123, 123},    /* dry1 */
+    {190, 190, 190},    /* thirsty */
+    { 85,  87,  88},    /* mossy */
+    { 76,  76,  78},    /* dead */
+    {178, 181, 182},    /* radioactive */
+    {162, 243, 242},    /* highly_radioactive */
+    {123, 131, 134}     /* blooming_radioactive */
 };
 
 static llp_col_base col_base_oceans_light =
-{0
+{
+    {  0, 126, 142},    /* base */
+    {  0, 143, 154},    /* loud */
+    {  0,  86,  90},    /* bright */
+    {175, 217, 222},    /* visual */
+    { 60, 150, 154},    /* habitable */
+    {  0, 109,  79},    /* dry0 */
+    { 57, 136, 121},    /* dry1 */
+    { 90, 118, 122},    /* thirsty */
+    {  0, 137, 130},    /* mossy */
+    {154, 156, 160},    /* dead */
+    { 70, 188, 192},    /* radioactive */
+    {  0, 111, 115},    /* highly_radioactive */
+    {  0,  31,  33}     /* blooming_radioactive */
 };
 
 static llp_col_base col_base_oceans_light_dead =
-{0
+{
+    { 81,  86,  87},    /* base */
+    { 81,  87,  88},    /* loud */
+    { 53,  56,  56},    /* bright */
+    {201, 203, 203},    /* visual */
+    {121, 123, 123},    /* habitable */
+    { 64,  66,  66},    /* dry0 */
+    {101, 102, 102},    /* dry1 */
+    {107, 109, 109},    /* thirsty */
+    { 84,  87,  87},    /* mossy */
+    {154, 156, 160},    /* dead */
+    {178, 181, 182},    /* radioactive */
+    { 20, 123, 127},    /* highly_radioactive */
+    { 16,  16,  16}     /* blooming_radioactive */
 };
 
 static llp_col_ui col_ui_dark =
 {
     { 31,  31,  31},    /* base */
     { 36,  36,  36},    /* line_nu */
-    { 64,  64,  64},    /* status_line */
+    { 64,  64,  64}     /* status_line */
 };
 
 static llp_col_ui col_ui_light =
 {
     {230, 230, 230},    /* base */
     {235, 235, 235},    /* line_nu */
-    {250, 250, 250},    /* status_line */
+    {250, 250, 250}     /* status_line */
 };
 
 static llp_col_text col_text_dark =
