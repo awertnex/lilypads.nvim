@@ -33,7 +33,11 @@ void header_setup(const str *name)
     code(0, "endfunction");
 }
 
-void footer_setup(void) {} /* no code is required on the vim side */
+void footer_setup(const llp_hl_groups groups) /* no code is required on the vim side */
+{
+    (void)groups;
+}
+
 
 void highlight_group(u8 level, const llp_hl_group group)
 {
@@ -88,6 +92,13 @@ void highlight_group(u8 level, const llp_hl_group group)
 
     fprintf(_file_out, "call " FUNC_PAINT "('%s', {%s%s%s})\n",
             group.name, str_fg, str_bg, str_sp);
+}
+
+void link_group(u8 level, const str *src, const llp_hl_group dst)
+{
+    (void)level;
+    (void)src;
+    (void)dst;
 }
 
 void write_colors(const llp_hl_groups groups)

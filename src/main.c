@@ -43,7 +43,7 @@ u32 write_file(llp_colorscheme colors)
     vim_cmd("hi clear");
     header_setup(colors.name);
     write_colors(colors.groups);
-    footer_setup();
+    footer_setup(colors.groups);
 
     if (_file_out != NULL)
         fclose(_file_out);
