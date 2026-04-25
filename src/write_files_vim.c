@@ -100,9 +100,11 @@ void write_colors(const llp_hl_groups groups)
     title(0, "syntax highlight groups");
     fputc('\n', _file_out);
 
-    highlight_group(0, groups.visual);
-
     fputc('\n', _file_out);
     title(0, "my favorite section");
+    fputc('\n', _file_out);
+
+    fputc('\n', _file_out);
+    title(1, "other highlight groups");
     fputc('\n', _file_out);
 }

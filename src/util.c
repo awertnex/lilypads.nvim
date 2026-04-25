@@ -115,7 +115,7 @@ void title(u8 level, const str *text)
 
 void pretty_print_hex_to_rgb(const str *name, u32 hex)
 {
-    printf("%x, {%3d, %3d, %3d}, %s\n", hex,
+    printf("%x, {%3d, %3d, %3d}, /* %s */\n", hex,
             (hex >> 0x10) & 0xff,
             (hex >> 0x08) & 0xff,
             (hex >> 0x00) & 0xff, name);
@@ -137,8 +137,32 @@ u32 gui_to_cterm(u32 hex)
 
 llp_col col_nc(llp_col col)
 {
-    col.r *= INACTIVE_COEF;
-    col.g *= INACTIVE_COEF;
-    col.b *= INACTIVE_COEF;
+    col.r *= COL_NC_COEF;
+    col.g *= COL_NC_COEF;
+    col.b *= COL_NC_COEF;
+    return col;
+}
+
+llp_col col_ncl(llp_col col)
+{
+    col.r *= COL_NCL_COEF;
+    col.g *= COL_NCL_COEF;
+    col.b *= COL_NCL_COEF;
+    return col;
+}
+
+llp_col txt_nc(llp_col col)
+{
+    col.r *= TXT_NC_COEF;
+    col.g *= TXT_NC_COEF;
+    col.b *= TXT_NC_COEF;
+    return col;
+}
+
+llp_col txt_ncl(llp_col col)
+{
+    col.r *= TXT_NCL_COEF;
+    col.g *= TXT_NCL_COEF;
+    col.b *= TXT_NCL_COEF;
     return col;
 }

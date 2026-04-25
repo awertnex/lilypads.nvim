@@ -89,19 +89,16 @@ typedef struct col_base llp_col_base;
 struct col_ui
 {
     llp_col base;
-    llp_col base_nc; /* TODO: deprecate, use `theme_colors.na_coef` */
-    llp_col base_nc_light; /* TODO: deprecate, use `theme_colors.na_coef` */
     llp_col line_nu;
     llp_col status_line;
-    llp_col status_line_nc; /* TODO: deprecate, use `theme_colors.na_coef` */
 };
 typedef struct col_ui llp_col_ui;
 
 struct col_text
 {
     /* base syntax colors */
-    llp_col text;
-    llp_col text_alt;
+    llp_col base;
+    llp_col base_alt;
     llp_col line_nu;
     llp_col comment;
     llp_col link;
@@ -113,6 +110,10 @@ struct col_text
     llp_col info;
     llp_col hint;
     llp_col ok;
+
+    /* diff colors */
+    llp_col diff_add_fg, diff_change_fg, diff_delete_fg, diff_text_fg;
+    llp_col diff_add_bg, diff_change_bg, diff_delete_bg, diff_text_bg;
 };
 typedef struct col_text llp_col_text;
 
@@ -175,9 +176,21 @@ void pretty_print_hex_to_rgb(const str *name, u32 hex);
 u32 rgb_to_hex(llp_col col);
 u32 gui_to_cterm(u32 hex);
 
-/*! @brief multiply color with @ref INACTIVE_COEF.
+/*! @brief multiply color with @ref COL_NC_COEF.
  */
 llp_col col_nc(llp_col col);
+
+/*! @brief multiply color with @ref COL_NCL_COEF.
+ */
+llp_col col_ncl(llp_col col);
+
+/*! @brief multiply color with @ref TXT_NC_COEF.
+ */
+llp_col txt_nc(llp_col col);
+
+/*! @brief multiply color with @ref TXT_NCL_COEF.
+ */
+llp_col txt_ncl(llp_col col);
 
 /*! @brief write the header components of the colorscheme file.
  *
