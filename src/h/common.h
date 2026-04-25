@@ -14,9 +14,6 @@
 #   define LLP_CMT_TAB2 "      "
 #   define LLP_CODE_SETUP ""
 
-#   define FUNC_PAINT "llp_paint"
-#   define FUNC_CLEAR "llp_clear"
-
 #elif defined(LLP_VIM)
 
 #   define LLP_DIR_DST "lilypads/vim/colors/"
@@ -26,9 +23,6 @@
 #   define LLP_CMT "\""
 #   define LLP_CMT_TAB1 "   "
 #   define LLP_CMT_TAB2 "       "
-
-#   define FUNC_PAINT "Llp_paint"
-#   define FUNC_CLEAR "Llp_clear"
 
 #endif /* LLP_SYNTAX */
 
@@ -56,6 +50,9 @@
 #define LLP_NOTES \
     LLP_CMT_TAB1"NOTES:\n" \
     LLP_CMT_TAB2"hitest command: `source $VIMRUNTIME/syntax/hitest.vim`"
+
+#define FUNC_PAINT "SetPaint"
+#define FUNC_CLEAR "SetClear"
 
 enum llp_flag
 {
