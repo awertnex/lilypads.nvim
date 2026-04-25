@@ -23,8 +23,10 @@ struct hl_groups
     llp_hl_group non_text;
     llp_hl_group directory;
     llp_hl_group error_msg;
+    llp_hl_group ignore;
     llp_hl_group search;
     llp_hl_group cur_search;
+    llp_hl_group inc_search;
     llp_hl_group more_msg;
     llp_hl_group mode_msg;
     llp_hl_group line_nr;
@@ -34,12 +36,19 @@ struct hl_groups
     llp_hl_group question;
     llp_hl_group status_line;
     llp_hl_group status_line_nc;
+    llp_hl_group status_line_term;
+    llp_hl_group status_line_term_nc;
 
     llp_hl_group win_separator;
     llp_hl_group vert_split;
     llp_hl_group title;
+    llp_hl_group toolbar_button;
+    llp_hl_group toolbar_line;
     llp_hl_group visual;
+    llp_hl_group visual_nos;
     llp_hl_group warning_msg;
+    llp_hl_group wild_menu;
+    llp_hl_group fold_column;
     llp_hl_group folded;
     llp_hl_group diff_add;
     llp_hl_group diff_change;

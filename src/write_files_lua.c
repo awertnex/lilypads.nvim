@@ -16,16 +16,28 @@ void header_setup(const str *name) /* no code is required on the lua side */
     code(1, "local guifg = table.guifg and table.guifg or \"NONE\"");
     code(1, "local guibg = table.guibg and table.guibg or \"NONE\"");
     code(1, "local sp = table.sp and table.sp or \"NONE\"");
-    code(1, "vim.cmd(\"highlight \" .. group .. \" ctermfg=\" .. termfg .. \" guifg=\" .. guifg .. \" ctermbg=\" .. termbg .. \" guibg=\" .. guibg .. \" cterm=\" .. sp .. \" gui=\" .. sp .. \" guisp=\" .. guifg)");
+    code(1, "local guisp = table.guifg and table.guifg or \"NONE\"");
+    fputc('\n', _file_out);
+
+    code(1, "vim.cmd(\"highlight \" .. group .. \" ctermfg=\" .. termfg .. \" guifg=\" .. guifg .. \" ctermbg=\" .. termbg .. \" guibg=\" .. guibg .. \" cterm=\" .. sp .. \" gui=\" .. sp .. \" guisp=\" .. guisp)");
+    code(0, "end");
+    fputc('\n', _file_out);
+
+    code(0, "function " FUNC_LINK "(src, dst)");
+    code(1, "vim.cmd(\"hi clear \" .. src)");
+    code(1, "vim.cmd(\"hi link \" .. src .. \" \" .. dst)");
     code(0, "end");
 }
 
-void footer_setup(void)
+void footer_setup(const llp_hl_groups groups)
 {
     fputc('\n', _file_out);
     code(0, "for key, value in pairs(paints) do");
     code(1, FUNC_PAINT"(key, value)");
     code(0, "end");
+
+    link_group(0, "@variable", groups.function);
+    link_group(0, "@variable.builtin", groups.function);
 }
 
 void highlight_group(u8 level, const llp_hl_group group)
@@ -50,7 +62,7 @@ void highlight_group(u8 level, const llp_hl_group group)
         --level;
     }
 
-    if (!(group.flags & FLAG_LUA))
+    if (!(group.flags & FLAG_ON))
     {
         snprintf(temp, STRING_MAX, "%s {};", group.name);
         comment(0, temp);
@@ -78,11 +90,23 @@ void highlight_group(u8 level, const llp_hl_group group)
             group.name, str_fg, str_bg, str_sp);
 }
 
+void link_group(u8 level, const str *src, const llp_hl_group dst)
+{
+    while (level)
+    {
+        fprintf(_file_out, "%s", "    ");
+        --level;
+    }
+
+    fprintf(_file_out, FUNC_LINK "('%s', '%s')\n", src, dst.name);
+}
+
 void write_colors(const llp_hl_groups groups)
 {
     fputc('\n', _file_out);
     code(0, "local paints = {");
 
+    fputc('\n', _file_out);
     title(1, "general highlight groups");
     fputc('\n', _file_out);
 

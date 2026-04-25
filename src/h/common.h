@@ -51,16 +51,16 @@
     LLP_CMT_TAB1"NOTES:\n" \
     LLP_CMT_TAB2"hitest command: `source $VIMRUNTIME/syntax/hitest.vim`"
 
-#define FUNC_PAINT "llp_paint"
-#define FUNC_CLEAR "llp_clear"
+#define FUNC_PAINT "SetPaint"
+#define FUNC_LINK "SetLink"
+#define FUNC_CLEAR "SetClear"
 
 enum llp_flag
 {
-    FLAG_LUA = 0x01,
-    FLAG_VIM = 0x02,
-    FLAG_FG = 0x04,
-    FLAG_BG = 0x08,
-    FLAG_SP = 0x10
+    FLAG_ON = 0x01,
+    FLAG_FG = 0x02,
+    FLAG_BG = 0x04,
+    FLAG_SP = 0x08
 }; /* llp_flag */
 
 struct col
@@ -80,6 +80,7 @@ struct col_base
     llp_col dry1;
     llp_col thirsty;
     llp_col mossy;
+    llp_col dead;
     llp_col radioactive;
     llp_col highly_radioactive;
     llp_col blooming_radioactive;
@@ -99,8 +100,9 @@ struct col_text
     /* base syntax colors */
     llp_col base;
     llp_col base_alt;
+    llp_col light;
+    llp_col light_alt;
     llp_col line_nu;
-    llp_col comment;
     llp_col link;
 
     /* diagnostic colors */
@@ -172,6 +174,7 @@ void comment_block(const str *text);
 void license(void);
 void title(u8 level, const str *text);
 void highlight_group(u8 level, const llp_hl_group group);
+void link_group(u8 level, const str *src, const llp_hl_group dst);
 void pretty_print_hex_to_rgb(const str *name, u32 hex);
 u32 rgb_to_hex(llp_col col);
 u32 gui_to_cterm(u32 hex);
@@ -202,7 +205,7 @@ void header_setup(const str *name);
  *
  *  @remark called automatically inside @ref write_file().
  */
-void footer_setup(void);
+void footer_setup(const llp_hl_groups groups);
 
 /*! @brief write the body of the colorscheme file.
  *
