@@ -1,9 +1,10 @@
 # changelog
 
-## v2.0-dev (current)
+## v2.1 (2026 04 27)
 
 #### changes
-- (2026 04 27): added readme
+- (2026 04 27): remove some unwanted files, no really
+- (2026 04 27): add readme
 
 - - -
 ## v2.0 (2026 04 26)
