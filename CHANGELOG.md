@@ -3,7 +3,8 @@
 ## v1.0-dev (current)
 
 #### changes
-- (2026 04 26): move from C code to lua code (half-way)
+- (2026 04 26): remove vim support (might introduce in the future)
+- (2026 04 26): move from C-based lua code generator to just lua code
 
 - - -
 ## v1.0 (2026 04 25)

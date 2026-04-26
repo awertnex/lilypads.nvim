@@ -1,86 +1,23 @@
 #include "h/common.h"
-#include "h/config.h"
+#include "h/logger.h"
 
 #include <stdio.h>
 #include <string.h>
 
-void vim_cmd(const str *cmd)
-{
-    fprintf(_file_out, LLP_VIM_CMD_OPEN "%s" LLP_VIM_CMD_CLOSE "\n", cmd);
-}
-
-void code(u8 level, const str *text)
-{
-    while (level)
-    {
-        fprintf(_file_out, "%s", "    ");
-        --level;
-    }
-    fprintf(_file_out, "%s\n", text);
-}
-
-void comment(u8 level, const str *text)
-{
-    while (level)
-    {
-        fprintf(_file_out, "%s", "    ");
-        --level;
-    }
-    fprintf(_file_out, LLP_CMT " %s\n", text);
-}
-
-void comment_block(const str *text)
-{
-    i64 i = 0;
-
-    fprintf(_file_out, "%s", LLP_CMT);
-
-    while (text[i])
-    {
-        fputc(text[i], _file_out);
-        if (text[i] == '\n')
-            fprintf(_file_out, "%s", LLP_CMT);
-        ++i;
-    }
-    fputc('\n', _file_out);
-}
-
-void license(void)
-{
-    str temp[STRING_MAX * 4] = {0};
-
-    snprintf(temp, STRING_MAX * 4,
-            LLP_CMT_TAB1 "MIT License\n"
-            "\n"
-            LLP_CMT_TAB1 "Copyright (c) %u %s\n"
-            "\n"
-            LLP_CMT_TAB1 "Permission is hereby granted, free of charge, to any person obtaining a copy\n"
-            LLP_CMT_TAB1 "of this software and associated documentation files (the \"Software\"), to deal\n"
-            LLP_CMT_TAB1 "in the Software without restriction, including without limitation the rights\n"
-            LLP_CMT_TAB1 "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n"
-            LLP_CMT_TAB1 "copies of the Software, and to permit persons to whom the Software is\n"
-            LLP_CMT_TAB1 "furnished to do so, subject to the following conditions:\n"
-            "\n"
-            LLP_CMT_TAB1 "The above copyright notice and this permission notice shall be included in all\n"
-            LLP_CMT_TAB1 "copies or substantial portions of the Software.\n"
-            "\n"
-            LLP_CMT_TAB1 "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n"
-            LLP_CMT_TAB1 "IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n"
-            LLP_CMT_TAB1 "FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n"
-            LLP_CMT_TAB1 "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n"
-            LLP_CMT_TAB1 "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
-            LLP_CMT_TAB1 "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"
-            LLP_CMT_TAB1 "SOFTWARE.\n",
-        LLP_LICENSE_YEAR, LLP_LICENSE_OWNER);
-
-    comment_block(temp);
-}
-
-void title(u8 level, const str *text)
+/* I like this function a lot, it's an adjustable-width title (a comment line) */
+void title(u8 level, const str *text, const str *file_name)
 {
     str temp[STRING_MAX] = {0};
     i32 cursor = 0;
     i32 strlen_cmt = strlen(LLP_CMT);
+    FILE *_file = NULL;
+
+    if ((_file = fopen(file_name, "w")) == NULL)
+    {
+        snprintf(temp, STRING_MAX, "Failed to Write File '%s'", file_name);
+        _log_error(temp);
+        return;
+    }
 
     while (level)
     {
@@ -94,7 +31,7 @@ void title(u8 level, const str *text)
         for (; cursor < TEXT_WIDTH - strlen_cmt - 1; ++cursor)
             temp[cursor] = '-';
         cursor += snprintf(temp + cursor, STRING_MAX - cursor, " %s", LLP_CMT);
-        fprintf(_file_out, "%s\n", temp);
+        fprintf(_file, "%s\n", temp);
         return;
     }
 
@@ -110,59 +47,9 @@ void title(u8 level, const str *text)
     if (cursor < TEXT_WIDTH - strlen_cmt)
         cursor += snprintf(temp + cursor, STRING_MAX - cursor, " %s", LLP_CMT);
 
-    fprintf(_file_out, "%s\n", temp);
-}
+    fprintf(_file, "%s\n", temp);
 
-void pretty_print_hex_to_rgb(const str *name, u32 hex)
-{
-    printf("%x, {%3d, %3d, %3d}, /* %s */\n", hex,
-            (hex >> 0x10) & 0xff,
-            (hex >> 0x08) & 0xff,
-            (hex >> 0x00) & 0xff, name);
-}
-
-u32 rgb_to_hex(llp_col col)
-{
-    return (u32)(0 |
-            (col.r << 0x10) |
-            (col.g << 0x08) |
-            (col.b << 0x00));
-}
-
-u32 gui_to_cterm(u32 hex)
-{
-    (void)hex;
-    return 0;
-}
-
-llp_col col_nc(llp_col col)
-{
-    col.r *= COL_NC_COEF;
-    col.g *= COL_NC_COEF;
-    col.b *= COL_NC_COEF;
-    return col;
-}
-
-llp_col col_ncl(llp_col col)
-{
-    col.r *= COL_NCL_COEF;
-    col.g *= COL_NCL_COEF;
-    col.b *= COL_NCL_COEF;
-    return col;
-}
-
-llp_col txt_nc(llp_col col)
-{
-    col.r *= TXT_NC_COEF;
-    col.g *= TXT_NC_COEF;
-    col.b *= TXT_NC_COEF;
-    return col;
-}
-
-llp_col txt_ncl(llp_col col)
-{
-    col.r *= TXT_NCL_COEF;
-    col.g *= TXT_NCL_COEF;
-    col.b *= TXT_NCL_COEF;
-    return col;
+    if (_file != NULL)
+        fclose(_file);
+    return;
 }
