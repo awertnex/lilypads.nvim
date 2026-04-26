@@ -16,7 +16,6 @@ str *cflags[] =
 
 str *files_lua[] =
 {
-    DIR_SRC"logger.c",
     DIR_SRC"util.c",
 };
 
