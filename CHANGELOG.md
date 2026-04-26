@@ -1,5 +1,10 @@
 # changelog
 
+## v1.0-dev (current)
+
+#### changes
+- (2026 04 26): move from C code to lua code (half-way)
+
 - - -
 ## v1.0 (2026 04 25)
 

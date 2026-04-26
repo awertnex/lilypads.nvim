@@ -195,18 +195,6 @@ llp_col txt_nc(llp_col col);
  */
 llp_col txt_ncl(llp_col col);
 
-/*! @brief write the header components of the colorscheme file.
- *
- *  @remark called automatically inside @ref write_file().
- */
-void header_setup(const str *name);
-
-/*! @brief write the footer components of the colorscheme file.
- *
- *  @remark called automatically inside @ref write_file().
- */
-void footer_setup(const llp_hl_groups groups);
-
 /*! @brief write the body of the colorscheme file.
  *
  *  @remark called automatically inside @ref write_file().

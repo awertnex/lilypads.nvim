@@ -5,41 +5,6 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-void header_setup(const str *name) /* no code is required on the lua side */
-{
-    (void)name;
-
-    fputc('\n', _file_out);
-    code(0, "function " FUNC_PAINT "(group, table)");
-    code(1, "local termfg = table.termfg and table.termfg or \"NONE\"");
-    code(1, "local termbg = table.termbg and table.termbg or \"NONE\"");
-    code(1, "local guifg = table.guifg and table.guifg or \"NONE\"");
-    code(1, "local guibg = table.guibg and table.guibg or \"NONE\"");
-    code(1, "local sp = table.sp and table.sp or \"NONE\"");
-    code(1, "local guisp = table.guifg and table.guifg or \"NONE\"");
-    fputc('\n', _file_out);
-
-    code(1, "vim.cmd(\"highlight \" .. group .. \" ctermfg=\" .. termfg .. \" guifg=\" .. guifg .. \" ctermbg=\" .. termbg .. \" guibg=\" .. guibg .. \" cterm=\" .. sp .. \" gui=\" .. sp .. \" guisp=\" .. guisp)");
-    code(0, "end");
-    fputc('\n', _file_out);
-
-    code(0, "function " FUNC_LINK "(src, dst)");
-    code(1, "vim.cmd(\"hi clear \" .. src)");
-    code(1, "vim.cmd(\"hi link \" .. src .. \" \" .. dst)");
-    code(0, "end");
-}
-
-void footer_setup(const llp_hl_groups groups)
-{
-    fputc('\n', _file_out);
-    code(0, "for key, value in pairs(paints) do");
-    code(1, FUNC_PAINT"(key, value)");
-    code(0, "end");
-
-    link_group(0, "@variable", groups.function);
-    link_group(0, "@variable.builtin", groups.function);
-}
-
 void highlight_group(u8 level, const llp_hl_group group)
 {
     str temp[STRING_MAX] = {0};

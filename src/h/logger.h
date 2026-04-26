@@ -2,5 +2,6 @@
 #define LILYPADS_LOGGER_H
 
 void _log_error(const str *msg);
+void _log_warning(const str *msg);
 
 #endif /* LILYPADS_LOGGER_H */

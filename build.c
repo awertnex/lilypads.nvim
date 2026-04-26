@@ -35,12 +35,6 @@ void build_vim(int argc, char **argv);
 
 int main(int argc, char **argv)
 {
-    make_dir("lilypads/");
-    make_dir("lilypads/lua/");
-    make_dir("lilypads/lua/colors/");
-    make_dir("lilypads/vim/");
-    make_dir("lilypads/vim/colors/");
-
     build_lua(argc, argv);
     cmd_free(&cmd);
     build_vim(argc, argv);

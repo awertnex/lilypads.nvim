@@ -2,10 +2,15 @@
 #include "h/logger.h"
 
 #include <stdio.h>
+#include <string.h>
 
 FILE *_file_out = NULL;
 llp_colorscheme lilypads_colorscheme[LLP_COLOR_COUNT] = {0};
 str hl_group_sp_text[HL_GROUP_SP_COUNT][HL_GROUP_PARAM_MAX] = {0};
+
+static u32 generate_palettes(void);
+static void generate_aux_pallettes(void);
+static u32 generate_colorscheme_entries(const str *cmd_reload_lua, llp_colorscheme *c);
 
 u32 write_file(llp_colorscheme colors)
 {
@@ -28,40 +33,248 @@ u32 write_file(llp_colorscheme colors)
         goto cleanup;
     }
 
-    license();
-    fputc('\n', _file_out);
-
-    snprintf(temp, STRING_MAX,
-            LLP_CMT_TAB1"file: %s"LLP_EXT"\n"
-            LLP_CMT_TAB1"generated using tool: "LLP_PROJECT_REPOSITORY"\n"
-            "\n"
-            LLP_NOTES,
-            colors.name);
-    comment_block(temp);
-    fputc('\n', _file_out);
-
-    vim_cmd("hi clear");
-    header_setup(colors.name);
     write_colors(colors.groups);
-    footer_setup(colors.groups);
 
     if (_file_out != NULL)
         fclose(_file_out);
-
     return 0;
 
 cleanup:
 
     if (_file_out != NULL)
         fclose(_file_out);
-
     return 2;
 }
 
-int main(void)
+static u32 generate_palettes(void)
+{
+    str temp[STRING_MAX] = {0};
+    str path[STRING_MAX] = {0};
+    u32 i = 0;
+
+    snprintf(path, STRING_MAX, "%s", "lua/lilypads/palette.lua");
+    if ((_file_out = fopen(path, "w")) == NULL)
+    {
+        snprintf(temp, STRING_MAX, "Failed to Write File '%s'", path);
+        _log_error(temp);
+        goto cleanup;
+    }
+
+    fprintf(_file_out, "%s", "local M = {}\n\n");
+
+    generate_aux_pallettes();
+
+    for (i = 0; i < LLP_COLOR_COUNT; ++i)
+        fprintf(_file_out,
+                "M.%s = {\n"
+                "    base = \"#%06x\",\n"
+                "    loud = \"#%06x\",\n"
+                "    bright = \"#%06x\",\n"
+                "    visual = \"#%06x\",\n"
+                "    habitable = \"#%06x\",\n"
+                "    dry0 = \"#%06x\",\n"
+                "    dry1 = \"#%06x\",\n"
+                "    thirsty = \"#%06x\",\n"
+                "    mossy = \"#%06x\",\n"
+                "    dead = \"#%06x\",\n"
+                "    radioactive = \"#%06x\",\n"
+                "    highly_radioactive = \"#%06x\",\n"
+                "    blooming_radioactive = \"#%06x\"\n"
+                "}\n\n",
+                lilypads_colorscheme[i].name + 9,
+                rgb_to_hex(lilypads_colorscheme[i].c_base.base),
+                rgb_to_hex(lilypads_colorscheme[i].c_base.loud),
+                rgb_to_hex(lilypads_colorscheme[i].c_base.bright),
+                rgb_to_hex(lilypads_colorscheme[i].c_base.visual),
+                rgb_to_hex(lilypads_colorscheme[i].c_base.habitable),
+                rgb_to_hex(lilypads_colorscheme[i].c_base.dry0),
+                rgb_to_hex(lilypads_colorscheme[i].c_base.dry1),
+                rgb_to_hex(lilypads_colorscheme[i].c_base.thirsty),
+                rgb_to_hex(lilypads_colorscheme[i].c_base.mossy),
+                rgb_to_hex(lilypads_colorscheme[i].c_base.dead),
+                rgb_to_hex(lilypads_colorscheme[i].c_base.radioactive),
+                rgb_to_hex(lilypads_colorscheme[i].c_base.highly_radioactive),
+                rgb_to_hex(lilypads_colorscheme[i].c_base.blooming_radioactive));
+
+    fprintf(_file_out, "%s", "return M\n");
+
+    if (_file_out != NULL)
+        fclose(_file_out);
+    return 0;
+
+cleanup:
+
+    if (_file_out != NULL)
+        fclose(_file_out);
+    return 1;
+}
+
+static void generate_aux_pallettes(void)
+{
+    fprintf(_file_out,
+            "M.ui_dark = {\n"
+            "    base = \"#%06x\",\n"
+            "    line_nu = \"#%06x\",\n"
+            "    status_line = \"#%06x\"\n"
+            "}\n\n",
+            rgb_to_hex(lilypads_colorscheme[0].c_ui.base),
+            rgb_to_hex(lilypads_colorscheme[0].c_ui.line_nu),
+            rgb_to_hex(lilypads_colorscheme[0].c_ui.status_line));
+
+    fprintf(_file_out,
+            "M.ui_light = {\n"
+            "    base = \"#%06x\",\n"
+            "    line_nu = \"#%06x\",\n"
+            "    status_line = \"#%06x\"\n"
+            "}\n\n",
+            rgb_to_hex(lilypads_colorscheme[2].c_ui.base),
+            rgb_to_hex(lilypads_colorscheme[2].c_ui.line_nu),
+            rgb_to_hex(lilypads_colorscheme[2].c_ui.status_line));
+
+    fprintf(_file_out,
+            "M.text_dark = {\n"
+            "    base = \"#%06x\",\n"
+            "    line_nu = \"#%06x\",\n"
+            "    status_line = \"#%06x\",\n"
+            "    base = \"#%06x\",\n"
+            "    base_alt = \"#%06x\",\n"
+            "    light = \"#%06x\",\n"
+            "    light_alt = \"#%06x\",\n"
+            "    line_nu = \"#%06x\",\n"
+            "    link = \"#%06x\",\n"
+
+            "    error = \"#%06x\",\n"
+            "    error_alt = \"#%06x\",\n"
+            "    warn = \"#%06x\",\n"
+            "    info = \"#%06x\",\n"
+            "    hint = \"#%06x\",\n"
+            "    ok = \"#%06x\",\n"
+
+            "    diff_add_fg = \"#%06x\",\n"
+            "    diff_change_fg = \"#%06x\",\n"
+            "    diff_delete_fg = \"#%06x\",\n"
+            "    diff_text_fg = \"#%06x\",\n"
+            "    diff_add_bg = \"#%06x\",\n"
+            "    diff_change_bg = \"#%06x\",\n"
+            "    diff_delete_bg = \"#%06x\",\n"
+            "    diff_text_bg = \"#%06x\"\n"
+            "}\n\n",
+        rgb_to_hex(lilypads_colorscheme[0].c_text.base),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.base_alt),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.light),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.light_alt),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.line_nu),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.link),
+
+        rgb_to_hex(lilypads_colorscheme[0].c_text.error),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.error_alt),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.warn),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.info),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.hint),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.ok),
+
+        rgb_to_hex(lilypads_colorscheme[0].c_text.diff_add_fg),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.diff_change_fg),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.diff_delete_fg),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.diff_text_fg),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.diff_add_bg),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.diff_change_bg),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.diff_delete_bg),
+        rgb_to_hex(lilypads_colorscheme[0].c_text.diff_text_bg));
+
+    fprintf(_file_out,
+            "M.text_light = {\n"
+            "    base = \"#%06x\",\n"
+            "    line_nu = \"#%06x\",\n"
+            "    status_line = \"#%06x\",\n"
+            "    base = \"#%06x\",\n"
+            "    base_alt = \"#%06x\",\n"
+            "    light = \"#%06x\",\n"
+            "    light_alt = \"#%06x\",\n"
+            "    line_nu = \"#%06x\",\n"
+            "    link = \"#%06x\",\n"
+
+            "    error = \"#%06x\",\n"
+            "    error_alt = \"#%06x\",\n"
+            "    warn = \"#%06x\",\n"
+            "    info = \"#%06x\",\n"
+            "    hint = \"#%06x\",\n"
+            "    ok = \"#%06x\",\n"
+
+            "    diff_add_fg = \"#%06x\",\n"
+            "    diff_change_fg = \"#%06x\",\n"
+            "    diff_delete_fg = \"#%06x\",\n"
+            "    diff_text_fg = \"#%06x\",\n"
+            "    diff_add_bg = \"#%06x\",\n"
+            "    diff_change_bg = \"#%06x\",\n"
+            "    diff_delete_bg = \"#%06x\",\n"
+            "    diff_text_bg = \"#%06x\"\n"
+            "}\n\n",
+        rgb_to_hex(lilypads_colorscheme[2].c_text.base),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.base_alt),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.light),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.light_alt),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.line_nu),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.link),
+
+        rgb_to_hex(lilypads_colorscheme[2].c_text.error),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.error_alt),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.warn),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.info),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.hint),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.ok),
+
+        rgb_to_hex(lilypads_colorscheme[2].c_text.diff_add_fg),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.diff_change_fg),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.diff_delete_fg),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.diff_text_fg),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.diff_add_bg),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.diff_change_bg),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.diff_delete_bg),
+        rgb_to_hex(lilypads_colorscheme[2].c_text.diff_text_bg));
+}
+
+static u32 generate_colorscheme_entries(const str *cmd_reload_lua, llp_colorscheme *c)
+{
+    str temp[2][STRING_MAX] = {0};
+    snprintf(temp[0], STRING_MAX, "colors/%s.lua", c->name);
+
+    if ((_file_out = fopen(temp[0], "w")) == NULL)
+    {
+        snprintf(temp[1], STRING_MAX, "Failed to Write File '%s'", temp[0]);
+        _log_error(temp[1]);
+        goto cleanup;
+    }
+
+    snprintf(temp[0], STRING_MAX, "%s", cmd_reload_lua);
+    fprintf(_file_out, "%s"
+            "local P = require(\"lilypads.palette\").%s\n"
+            "require(\"lilypads.init\").setup(P)\n",
+            temp[0], c->name + 9);
+
+    if (_file_out != NULL)
+        fclose(_file_out);
+    return 0;
+
+cleanup:
+
+    if (_file_out != NULL)
+        fclose(_file_out);
+    return 1;
+}
+
+int main(int argc, char **argv)
 {
     i32 i = 0;
     u32 err = 0;
+    str temp[STRING_MAX] = {0};
+
+    if (argc < 2 || strncmp(argv[1], "release", 8))
+    {
+        _log_warning("Installing Development Build!");
+        snprintf(temp, STRING_MAX, "%s",
+                "package.loaded[\"lilypads.nvim\"] = nil\n\n");
+    }
 
     snprintf(hl_group_sp_text[HL_GROUP_SP_NONE], HL_GROUP_PARAM_MAX, "%s", "NONE");
     snprintf(hl_group_sp_text[HL_GROUP_SP_BOLD], HL_GROUP_PARAM_MAX, "%s", "bold");
@@ -111,10 +324,14 @@ int main(void)
     for (i = 0; i < LLP_COLOR_COUNT; ++i)
     {
         lilypads_colorscheme[i].setup_func();
+        /*
         err = write_file(lilypads_colorscheme[i]);
-        if (err != 0)
-            return err;
+        */
+        err = generate_colorscheme_entries(temp, &lilypads_colorscheme[i]);
+        if (err != 0) goto cleanup;
     }
 
-    return 0;
+cleanup:
+
+    return err;
 }
