@@ -1,8 +1,9 @@
 # changelog
 
-## v1.0-dev (current)
+## v2.0 (2026 04 26)
 
 #### changes
+- (2026 04 26): link major groups to a few base colors
 - (2026 04 26): remove vim support (might introduce in the future)
 - (2026 04 26): move from C-based lua code generator to just lua code
 
