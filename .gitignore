@@ -1,5 +1,3 @@
-lilypads/
-build
-install.sh
-lilypads_lua
-lilypads_vim
+./build
+./install.sh
+./lilypads
