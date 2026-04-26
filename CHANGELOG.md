@@ -1,5 +1,11 @@
 # changelog
 
+## v2.0-dev (current)
+
+#### changes
+- (2026 04 27): added readme
+
+- - -
 ## v2.0 (2026 04 26)
 
 #### changes
