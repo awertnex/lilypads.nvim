@@ -2,6 +2,13 @@
 
 **a neovim colorscheme for minimal visual noise written in lua, with a few variants.**
 
+![example_00](https://www.github.com/awertnex/lilypads.nvim/blob/main/assets/example_00.png)
+![example_01](https://www.github.com/awertnex/lilypads.nvim/blob/main/assets/example_01.png)
+![example_02](https://www.github.com/awertnex/lilypads.nvim/blob/main/assets/example_02.png)
+![example_03](https://www.github.com/awertnex/lilypads.nvim/blob/main/assets/example_03.png)
+![example_04](https://www.github.com/awertnex/lilypads.nvim/blob/main/assets/example_04.png)
+![example_05](https://www.github.com/awertnex/lilypads.nvim/blob/main/assets/example_05.png)
+
 ## Variants
 - lilypads_nature: shades of nature greens, from moss, to dry, to radioactive
     - dark
