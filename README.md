@@ -1,18 +1,18 @@
 # Lilypads.Nvim
 
-**a neovim colorscheme for minimal visual noise written in lua, with a few variants.**
+**a colorscheme family for NeoVim with minimal coloring, written in lua.**
 
-![example_00](https://www.github.com/awertnex/lilypads.nvim/blob/dev/assets/example_00.png)
+<img align="center" src="https://github.com/awertnex/lilypads.nvim/blob/dev/assets/example_00.png" alt="example_00">
 
-![example_01](https://www.github.com/awertnex/lilypads.nvim/blob/dev/assets/example_01.png)
+<img align="center" src="https://github.com/awertnex/lilypads.nvim/blob/dev/assets/example_01.png" alt="example_01">
 
-![example_02](https://www.github.com/awertnex/lilypads.nvim/blob/dev/assets/example_02.png)
+<img align="center" src="https://github.com/awertnex/lilypads.nvim/blob/dev/assets/example_02.png" alt="example_02">
 
-![example_03](https://www.github.com/awertnex/lilypads.nvim/blob/dev/assets/example_03.png)
+<img align="center" src="https://github.com/awertnex/lilypads.nvim/blob/dev/assets/example_03.png" alt="example_03">
 
-![example_04](https://www.github.com/awertnex/lilypads.nvim/blob/dev/assets/example_04.png)
+<img align="center" src="https://github.com/awertnex/lilypads.nvim/blob/dev/assets/example_04.png" alt="example_04">
 
-![example_05](https://www.github.com/awertnex/lilypads.nvim/blob/dev/assets/example_05.png)
+<img align="center" src="https://github.com/awertnex/lilypads.nvim/blob/dev/assets/example_05.png" alt="example_05">
 
 ## Variants
 - lilypads_nature: shades of nature greens, from moss, to dry, to radioactive
